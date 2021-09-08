@@ -1,0 +1,63 @@
+security:
+    password_hashers:
+        App\CoreAuthBundle\Entity\Profile: bcrypt
+        Kematjaya\UserBundle\Entity\DefaultUser: bcrypt
+
+    role_hierarchy:
+        ROLE_ADMINISTRATOR: ROLE_USER
+        ROLE_SUPER_USER: ROLE_ADMINISTRATOR
+
+    enable_authenticator_manager: true
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\CoreAuthBundle\Entity\Profile
+                property: username
+    firewalls:
+        api_token_refresh:
+            pattern: ^/api/token/refresh
+            stateless: true
+            refresh_jwt:
+                provider: app_user_provider
+
+        api_login:
+            pattern: ^/api/login
+            stateless: true
+            json_login:
+                provider: app_user_provider
+                check_path: /api/login
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            provider: app_user_provider
+
+        api:
+            pattern: ^/api
+            stateless: true
+            provider: app_user_provider
+            guard:
+                authenticators:
+                    - 'lexik_jwt_authentication.jwt_token_authenticator'
+
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            pattern: ^/
+
+            logout:
+                path: kmj_user_logout
+            custom_authenticators:
+                - Kematjaya\UserBundle\Security\FormLoginAuthenticator
+
+    access_control:
+        - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
+        - { path: ^/api/auth/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/admin/, role: ROLE_ADMIN }

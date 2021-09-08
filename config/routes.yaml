@@ -1,0 +1,23 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+api_login:
+    path: /api/login
+    methods:  [POST]
+
+api:
+    path: /api
+    controller: App\CoreAuthBundle\Controller\Api\ApiAuthController::registerAction
+
+api_auth_register:
+    path: /api/auth/register
+    controller: App\CoreAuthBundle\Controller\Api\ApiAuthController::registerAction
+    methods:  [POST]
+
+api_login_check:
+    path: /api/login_check
+    controller: App\CoreAuthBundle\Controller\Api\ApiAuthController::getTokenUser
+
+gesdinet_jwt_refresh_token:
+    path: /api/token/refresh

@@ -1,0 +1,13 @@
+controllers:
+    resource: ../../src/
+    exclude:
+        - '../../src/CoreAbstractBundle/Controller/'
+        - '../../src/CoreAuthBundle/Controller/'
+    type: annotation
+
+kernel:
+    resource: ../../src/Kernel.php
+    type: annotation
+
+kmj_user:
+    resource: '@UserBundle/Resources/config/routing/all.xml'
