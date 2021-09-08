@@ -27,6 +27,7 @@ class ApiAuthController extends BaseAbstractController
     /**
      * @Route("/register", name="api_auth_register",  methods={"POST"})
      * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
      * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function registerAction(Request $request, UserPasswordEncoderInterface $encoder)
