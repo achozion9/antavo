@@ -20,6 +20,9 @@ class ProfileService
         $this->tokenStorage = $storage;
     }
 
+    /**
+     * @return Profile|null
+     */
     public function getCurrentProfile()
     {
         $token = $this->tokenStorage->getToken();
